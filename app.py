@@ -1,9 +1,13 @@
-from zoneinfo import available_timezones
+import random
 
 start = False
 
 timepass = 0
 timeset = 0
+
+customers = 0.35
+
+buy = 0
 
 speed = 0.5
 
@@ -86,13 +90,16 @@ while start == True:
             made = made + 1
             roundstock = roundstock + 1
             money = money - int(cost)
-        while int(roundstock) > 0 and int(will) > int(price) - 15 and sell < int(maxsell):
+        buy = random.random()
+        while int(roundstock) > 0 and int(will) > int(price) - 15 and sell < int(maxsell) and buy >= customers:
+            buy = random.random()
             sell = sell + 1
             roundstock = roundstock - 1
             money = money + int(price)
             totalsales = totalsales + 1
         difference = int(price) - int(will)
         taxes = int(money) * taxpercent
+        print("Possible Customers", customers)
         print("Current stock: ", roundstock)
         print("Current money: $", money)
         print("Current will: $", will)
@@ -104,19 +111,22 @@ while start == True:
         timepass = int(timepass) + 1
         timeset = int(timeset) + 1
         money = int(money) - int(taxes)
-        will = int(will) - totalsales * 0.01
+        will = int(will) - customers * 0.75
         if int(stopyear) <= timepass:
             start = False
         if int(timeset) > int(quality):
-            will = int(will) + int(quality) * 2
+            will = int(will) - customers * 2
             timeset = 0
         time.sleep(float(speed))
         made = 0
         sell = 0
+        customers = customers - 0.009
+
     else:
         start = False
 
 print("FINAL STATS")
+print("Possible Customers", customers)
 print("Final price: $", price)
 print("Final stock: ", roundstock)
 print("Final money: $", money)
@@ -124,4 +134,3 @@ print("Final cost: $", cost)
 print("Final will: $", will)
 print("Final years", timepass)
 print("Total Sales", totalsales)
-
