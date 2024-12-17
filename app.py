@@ -5,7 +5,7 @@ start = False
 timepass = 0
 timeset = 0
 
-customers = 0.35
+customers = 0.65
 
 buy = 0
 
@@ -46,19 +46,19 @@ will = 0
 
 while start == False:
     money = input("Investment?")
-    cost = input("Cost?")
-    rawstock = int(money)/int(cost)
-    roundstock = round(rawstock, 0)
-    money = int(money) - int(roundstock)*int(cost)
-    price = input("Price?")
-    will = input("Will?")
+    cost = input("Cost? x50")
+    rawstock = int(money) / int(cost)
+    roundstock = round(rawstock, 0) * 50
+    money = int(money) - int(roundstock)*int(cost)/50
+    price = input("Price? x50")
+    will = input("Will? x50")
     if input("Dynamic Price? y/n") == ("y"):
         dynamicprice = True
     else:
         dynamicprice = False
     quality = input("Quality?")
-    maxsell = input("Max sellable?")
-    maxmake = input("Max makeable?")
+    maxsell = input("Max sellable? x50")
+    maxmake = input("Max makeable? x50")
     taxpercent = int(input("Tax Percent?")) * 0.01
     speed = input("Speed? (Seconds)")
     stopyear = input("Stop Year?")
@@ -85,18 +85,18 @@ while start == False:
         print("unknown answer")
 
 while start == True:
-    if int(money) > -100 and int(roundstock) > -5 and int(price) > 0 and int(will) > 0:
-        while int(money) > int(cost) and made < int(maxmake):
+    if int(money) > -100 and int(roundstock) > -500 and int(price) > 0 and int(will) > 0:
+        while int(money) > int(cost) and made < int(maxmake) and roundstock < 1000:
             made = made + 1
-            roundstock = roundstock + 1
+            roundstock = roundstock + 50
             money = money - int(cost)
         buy = random.random()
-        while int(roundstock) > 0 and int(will) > int(price) - 15 and sell < int(maxsell) and buy >= customers:
+        while int(roundstock) > 49 and int(will) > int(price) - 15 and sell < int(maxsell) and buy >= customers:
             buy = random.random()
             sell = sell + 1
-            roundstock = roundstock - 1
-            money = money + int(price)
-            totalsales = totalsales + 1
+            roundstock = roundstock - 50
+            money = money + int(price) * 50
+            totalsales = totalsales + 50
         difference = int(price) - int(will)
         taxes = int(money) * taxpercent
         print("Possible Customers", customers)
@@ -111,10 +111,11 @@ while start == True:
         timepass = int(timepass) + 1
         timeset = int(timeset) + 1
         money = int(money) - int(taxes)
-        will = int(will) - customers * 0.75
+        will = int(will) - int(customers) * int(price) * 0.05
         if int(stopyear) <= timepass:
             start = False
         if int(timeset) > int(quality):
+            customers = customers + 0.05 * customers
             will = int(will) - customers * 2
             timeset = 0
         time.sleep(float(speed))
